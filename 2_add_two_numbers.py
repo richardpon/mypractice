@@ -24,7 +24,7 @@ class ListNode:
         return s
 
 
-class Solution:
+class RecursiveSolution:
 
     def addTwoNumbers(self, aa, bb):
         return self.addTwoWithCarry(aa, bb, 0)
@@ -77,6 +77,69 @@ class Solution:
 
 
 
+
+class Solution:
+
+    def addTwoNumbers(self, l1, l2):
+
+        carry = 0
+        head = None
+        tail = None
+
+        while True:
+
+            # calc current val
+            # both l1 and l2 are ListNodes
+            if l1 is not None and l2 is not None:
+                curVal = l1.val + l2.val + carry
+                if curVal > 9:
+                    curVal -= 10
+                    carry = 1
+                else:
+                    carry = 0
+
+            # both l1 and l2 are None
+            elif l1 is None and l2 is None:
+                if carry > 0:
+                    curVal = carry
+                    carry = 0
+                else:
+                    # l1 and l2 are None and carry=0
+                    break
+
+            # only l1 OR l2 is a ListNode
+            else:
+                if l1 is None:
+                    l = l2
+                else:
+                    l = l1
+                curVal = l.val + carry
+                # TODO: refactor dupe logic???
+                if curVal > 9:
+                    curVal -= 10
+                    carry = 1
+                else:
+                    carry = 0
+
+            # increment all pointers
+            #create node
+            curNode = ListNode(curVal)
+
+            if head is None:
+                head = curNode
+                tail = curNode
+            else:
+                tail.next = curNode
+                tail = curNode
+
+            if l1 is not None:
+                l1 = l1.next
+            if l2 is not None:
+                l2 = l2.next
+
+        return head
+
+
 l1 = ListNode(2)
 l1.next = ListNode(4)
 l1.next.next = ListNode(3)
@@ -88,10 +151,11 @@ l2.next.next = ListNode(4)
 s = Solution()
 a = s.addTwoNumbers(l1, l2)
 
-print("A")
-print(str(a))
 print(repr(a))
-        
-            
 
-        
+
+
+l1 = ListNode(1)
+l1.next = ListNode(8)
+l2 = ListNode(0)
+print(repr(s.addTwoNumbers(l1,l2)))
