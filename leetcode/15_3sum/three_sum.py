@@ -70,17 +70,18 @@ class Solution:
         if len(nums) < 3:
             return []
 
-        # Dict[int, List[int]] # Dict[num: indices]
+        # Dict[int, List[int]] # Dict[num: indices_of_num]
         num_to_index_dict = self.create_indexes(nums)
 
         # potential output of sets of Tuples
         # Set[Tuple[int,int,int]]
-        get_of_outputs = set()
+        set_of_triplets = set()
 
         for i in range(0, len(nums) - 1):
             for j in range(i + 1, len(nums)):
                 a = nums[i]
                 b = nums[j]
+                #c = -a-b
 
                 if -(a + b) in num_to_index_dict:
                     # possible matches List[int]
@@ -88,14 +89,15 @@ class Solution:
                     for k in possible_indexes:
                         if k != i and k != j:
                             #yay, we found unique indexes
-                            indices = [a, b, -a-b]
-                            indices.sort()
-                            get_of_outputs.add((indices[0], indices[1], indices[2]))
+                            list_of_nums = [a, b, -a-b]
+                            list_of_nums.sort()
+                            set_of_triplets.add((list_of_nums[0], list_of_nums[1], list_of_nums[2]))
 
         # convert Tuples to lists
+        # set_of_triplets = Set[Tuple[int,int,int]]
         output = []
-        for set_of_nums in get_of_outputs:
-            list_of_nums = [set_of_nums[0], set_of_nums[1], set_of_nums[2]]
+        for triplet in set_of_triplets:
+            list_of_nums = [triplet[0], triplet[1], triplet[2]]
             output.append(list_of_nums)
 
         output.sort()
