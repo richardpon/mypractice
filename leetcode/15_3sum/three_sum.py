@@ -104,12 +104,3 @@ class Solution:
         return num_to_index_dict
 
 
-nums = [-1,0,1,2,-1,-4,-1,-1,-1]
-
-s = Solution()               
-
-ret = s.threeSum(nums)
-print("___")
-print(ret)
-
-
