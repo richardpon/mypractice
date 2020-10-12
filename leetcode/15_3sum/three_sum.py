@@ -26,42 +26,6 @@ class Solution:
 
     """
 
-    def reduce_nums(self, nums: List[int]) -> List[int]:
-        # At most 3 copies of any number
-        # count each instance of every number
-        nums_count = {} #Dict[number:int, count:int] 
-        for num in nums:
-            if num in nums_count:
-                nums_count[num] = nums_count[num] + 1
-            else:
-                nums_count[num] = 1
-
-        # build nums with max 3 instances of each number
-        reduced_nums = []
-        for num in nums_count.keys():
-            num_count = nums_count[num]
-            for i in range(0, min(num_count, 3)):
-                reduced_nums.append(num)
-        
-        return reduced_nums
-
-
-    # Dict[num:int, indices:List[int]]
-    # input [-1,0,1,2,-1,-4]
-    # {-1:[0,4], 0:[1], 1:[2], 2:[3], -4:[5]}                # need index to dedupe A+B+C=0 (don't want C==A, has to be a different number)
-    def create_indexes(self, nums: List[int]) -> Dict[int, List[int]]:
-        num_to_index_dict = {}
-        for i in range(0, len(nums)):
-            cur_num = nums[i]
-            if cur_num in num_to_index_dict:
-                cur_indexes = num_to_index_dict[cur_num] # List[int]
-                cur_indexes.append(i)
-                num_to_index_dict[cur_num] = cur_indexes
-            else:
-                num_to_index_dict[cur_num] = [i]
-        
-        return num_to_index_dict
-
     def threeSum(self, nums: List[int]) -> List[List[int]]:
         
         # At most 3 copies of any number
@@ -103,6 +67,41 @@ class Solution:
         output.sort()
         return output
 
+    def reduce_nums(self, nums: List[int]) -> List[int]:
+        # At most 3 copies of any number
+        # count each instance of every number
+        nums_count = {} #Dict[number:int, count:int] 
+        for num in nums:
+            if num in nums_count:
+                nums_count[num] = nums_count[num] + 1
+            else:
+                nums_count[num] = 1
+
+        # build nums with max 3 instances of each number
+        reduced_nums = []
+        for num in nums_count.keys():
+            num_count = nums_count[num]
+            for i in range(0, min(num_count, 3)):
+                reduced_nums.append(num)
+        
+        return reduced_nums
+
+
+    # Dict[num:int, indices:List[int]]
+    # input [-1,0,1,2,-1,-4]
+    # {-1:[0,4], 0:[1], 1:[2], 2:[3], -4:[5]}                # need index to dedupe A+B+C=0 (don't want C==A, has to be a different number)
+    def create_indexes(self, nums: List[int]) -> Dict[int, List[int]]:
+        num_to_index_dict = {}
+        for i in range(0, len(nums)):
+            cur_num = nums[i]
+            if cur_num in num_to_index_dict:
+                cur_indexes = num_to_index_dict[cur_num] # List[int]
+                cur_indexes.append(i)
+                num_to_index_dict[cur_num] = cur_indexes
+            else:
+                num_to_index_dict[cur_num] = [i]
+        
+        return num_to_index_dict
 
 
 nums = [-1,0,1,2,-1,-4,-1,-1,-1]
