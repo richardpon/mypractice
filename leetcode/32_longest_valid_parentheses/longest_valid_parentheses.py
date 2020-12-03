@@ -1,3 +1,5 @@
+from typing import List
+
 class Solution:
     """
     Problem: Identify which parentheses in the string
@@ -17,33 +19,49 @@ class Solution:
     """
     def longestValidParentheses(self, s: str) -> int:
         
-        open_paren_count = 0
-        most_parens = 0
-        current_matched_paren_count = 0
+        # Keep track of which character in s belongs to a matching paren
+        # initialize to all false, as we don't know if any match or not
+        matching_paren_tracker: List[bool] = []
+        for i in range(0, len(s)):
+            matching_paren_tracker.append(False)
 
-        for i in range(0,len(s)):
-            cur_char = s[i]
-            
-            # open paren always add to open_paren_count
-            if cur_char == "(":
-                open_paren_count += 1
-            
+        # stack of index of open paren
+        open_paren_indexes: List[int] = []
+
+        for i in range(0, len(s)):
+            if s[i] == "(":
+                # add open paren to stack as we don't know if it is matching yet
+                open_paren_indexes.append(i)
             else:
-                if open_paren_count > 0:
+                # see if closing paren matches top open paren of stack
+                if len(open_paren_indexes) > 0:
+                    # There is an open paren that will match this closing paren
 
-                    #closed paren matches open paren
-                    # decrement open_parent_count
-                    #current_matched_paren_count +=2
-                    # update most_parens
-                    open_paren_count -= 1
-                    current_matched_paren_count += 2
+                    # mark indexes of both parens as matching
+                    # mark open paren as matching
+                    matching_paren_tracker[open_paren_indexes[-1]] = True
 
-                    if current_matched_paren_count > most_parens:
-                        most_parens = current_matched_paren_count
+                    # mark closed paren as matching
+                    matching_paren_tracker[i] = True 
+
+                    # pop open paren from stack (delete it)
+                    del open_paren_indexes[-1]
 
                 else:
-                    # closed paren doesn't match (no open parens)
-                    #reset current_matched_paren_count
-                    current_matched_paren_count = 0
+                    # There is no open paren, so this closing paren is unmatched
+                    matching_paren_tracker[i] = False
+
+        # Count longest sequential matched parens
+        max_longest = 0
+        longest_so_far = 0
+        for i in range(0, len(matching_paren_tracker)):
+            if (matching_paren_tracker[i]):
+                # found another matching paren
+                longest_so_far += 1
+                if longest_so_far > max_longest:
+                    max_longest = longest_so_far
+            else:
+                # found an unmatched paren, reset counters
+                longest_so_far = 0
         
-        return most_parens
+        return max_longest
