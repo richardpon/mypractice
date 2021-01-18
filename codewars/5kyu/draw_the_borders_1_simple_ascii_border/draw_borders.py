@@ -93,7 +93,8 @@ class Solution:
         # print characters
         for y in range(max_y, min_y - 1, -1):
             line = ""
-            for x in range(min_x, max_x + 1):
+            max_x_for_row = self.get_max_x_for_row(y, shape)
+            for x in range(min_x, min(max_x + 1, max_x_for_row + 1)):
                 line += self.get_char(x, y, shape)
             
             output += line + "\n"
@@ -132,6 +133,13 @@ class Solution:
             max_y = max(max_y, y)
 
         return (min_x, max_x, min_y, max_y)
+
+    def get_max_x_for_row(self, y, shapes) -> int:
+        x = -100
+        for (cur_x, cur_y) in shapes:
+            if cur_y == y:
+                x = max(x, cur_x)
+        return x
 
 
 s = Solution()
